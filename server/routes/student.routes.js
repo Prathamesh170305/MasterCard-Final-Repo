@@ -1,9 +1,3 @@
-<<<<<<< HEAD
-import express from "express";
-import { deleteUser, uploadStudentExcel, createUser, createAdmin, processLinkedInExcel } from "../controllers/user.controller.js";
-import authorizeRoles from "../middlewares/authorizeRoles.js";
-import multer from "multer";
-=======
 import {Router} from "express";
 import {
     registerUser,
@@ -17,7 +11,6 @@ import {
     updateUserCoverImage} from "../controllers/user.controller.js";
 import { upload } from "../middlewares/multer.middleware.js";
 import { verifyJWT} from "../middlewares/auth.middleware.js"
->>>>>>> 02cf8b7b0024d4be512cc9b56113bc09b0275969
 
 
 
@@ -38,11 +31,31 @@ router
     registerUser)
 
 router
-.route("/login").post(loginUser)
-//secured routes
+.route("/logout").post(verifyJWT, logoutUser)
 
+// router
+// .route("/refresh-token").post(refreshAccessToken)
 
-// Upload LinkedIn Excel file and process data
-router.post("/upload-linkedin-excel", upload.single("file"), processLinkedInExcel);
+router
+.route("/change-password").post(verifyJWT, changeCurrentPassword)
+
+router
+.route("/current-user").get(verifyJWT, getCurrentUser)
+
+router
+.route("/update-account").patch(verifyJWT, updateAccountDetails)
+
+router
+.route("/avatar").patch(verifyJWT, upload.single("avatar"), updateUserAvatar)
+
+// router
+// .route("/cover-image").patch(verifyJWT, upload.single("coverImage"), updateUserCoverImage)
+
+// router
+// .route("/channel/:username").get(verifyJWT, getUserChannelProfile)
+
+// router
+// .route("/watch-history").get(verifyJWT, getWatchHistory)
+
 
 export default router;
