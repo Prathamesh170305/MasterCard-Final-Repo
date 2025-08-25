@@ -1,10 +1,10 @@
 import mongoose from "mongoose";
 
-const adminSchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema({
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-
+    linkedinId: { type: String ,required:true},
     verifyOtp: { type: String, default: '' },
     verifyOtpExpiredAt: { type: Number, default: 0 },
     isAccountVerified: { type: Boolean, default: false },
@@ -12,16 +12,14 @@ const adminSchema = new mongoose.Schema({
     resetOtpExpiredAt: { type: Number, default: 0 },
 
     role: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Role",
-        required: true
+        type: String,
+        enum: ['Student', 'Admin', 'Clerk'], 
+        required: true,
+        default: 'Student'
     },
-    isActive: { type: Boolean, default: true },
-
-    adminId: { type: Number, unique: true, required: true }, // numeric ID
-    designation: { type: String } // e.g. "Super Admin"
+    isActive: { type: Boolean, default: true }
 }, { timestamps: true });
 
-const adminModel = mongoose.models.admin || mongoose.model("admin", adminSchema);
+const userModel = mongoose.models.user || mongoose.model("user", userSchema);
 
-export default adminModel;
+export default userModel;

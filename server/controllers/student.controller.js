@@ -1,4 +1,4 @@
-import studentModel from "../models/student.model.js";
+import userModel from "../models/user.model.js";
 
 // Update student information
 export const updateStudent = async (req, res) => {
@@ -6,7 +6,11 @@ export const updateStudent = async (req, res) => {
         const { id } = req.params;
         const updates = req.body;
 
-        const updatedStudent = await studentModel.findByIdAndUpdate(id, updates, { new: true });
+        const updatedStudent = await userModel.findOneAndUpdate(
+            { _id: id, role: "student" },
+            updates,
+            { new: true }
+        );
 
         if (!updatedStudent) {
             return res.status(404).json({ message: "Student not found" });
@@ -23,7 +27,7 @@ export const deleteStudent = async (req, res) => {
     try {
         const { id } = req.params;
 
-        const deletedStudent = await studentModel.findByIdAndDelete(id);
+        const deletedStudent = await userModel.findOneAndDelete({ _id: id, role: "student" });
 
         if (!deletedStudent) {
             return res.status(404).json({ message: "Student not found" });
