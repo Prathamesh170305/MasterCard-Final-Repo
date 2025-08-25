@@ -1,5 +1,6 @@
 import userModel from "../models/user.model.js";
 import xlsx from "xlsx";
+import LinkedInScraper from "../scraper/linkedin_scraper.js";
 
 export const deleteUser = async (req, res) => {
     try {
@@ -69,6 +70,39 @@ export const createAdmin = async (req, res) => {
 
         await admin.save();
         res.status(201).json({ message: "Admin created successfully", admin });
+    } catch (error) {
+        res.status(500).json({ message: "Internal Server Error", error: error.message });
+    }
+};
+
+export const processLinkedInExcel = async (req, res) => {
+    try {
+        const file = req.file;
+        if (!file) {
+            return res.status(400).json({ message: "No file uploaded" });
+        }
+
+        const workbook = xlsx.read(file.buffer, { type: "buffer" });
+        const sheetName = workbook.SheetNames[0];
+        const sheet = workbook.Sheets[sheetName];
+        const rows = xlsx.utils.sheet_to_json(sheet);
+
+        const results = [];
+
+        for (const row of rows) {
+            const { linkedInUrl, userId } = row;
+            if (!linkedInUrl || !userId) {
+                continue;
+            }
+
+            const scraper = new LinkedInScraper(linkedInUrl);
+            const scrapedData = await scraper.scrape_profile();
+            scraper.save_to_mongo(userId, scrapedData);
+
+            results.push({ userId, ...scrapedData });
+        }
+
+        res.status(200).json({ message: "Data processed successfully", results });
     } catch (error) {
         res.status(500).json({ message: "Internal Server Error", error: error.message });
     }

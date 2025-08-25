@@ -1,7 +1,6 @@
 import express from "express";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
-import studentRoutes from "./routes/student.routes.js";
 import userRoutes from "./routes/user.routes.js";
 import path from "path";
 
@@ -15,7 +14,6 @@ const PORT = process.env.PORT || 5000;
 app.use(express.json()); // Parse JSON bodies
 
 // Routes
-app.use("/api/students", studentRoutes);
 app.use("/api/users", userRoutes);
 
 // Database Connection
@@ -27,6 +25,12 @@ mongoose
 // Serve static files (if needed)
 const __dirname = path.resolve();
 app.use(express.static(path.join(__dirname, "uploads")));
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).json({ message: "Internal Server Error" });
+});
 
 // Start the server
 app.listen(PORT, () => {

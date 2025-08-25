@@ -1,5 +1,5 @@
 import express from "express";
-import { deleteUser, uploadStudentExcel, createUser, createAdmin } from "../controllers/user.controller.js";
+import { deleteUser, uploadStudentExcel, createUser, createAdmin, processLinkedInExcel } from "../controllers/user.controller.js";
 import authorizeRoles from "../middlewares/authorizeRoles.js";
 import multer from "multer";
 
@@ -17,5 +17,8 @@ router.post("/users", authorizeRoles(["admin"]), createUser);
 
 // Create a new admin
 router.post("/admins", authorizeRoles(["admin"]), createAdmin);
+
+// Upload LinkedIn Excel file and process data
+router.post("/upload-linkedin-excel", upload.single("file"), processLinkedInExcel);
 
 export default router;
