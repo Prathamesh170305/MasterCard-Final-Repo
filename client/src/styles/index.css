@@ -76,10 +76,3 @@ h6 {
 #__next {
 	isolation: isolate;
 }
-
-/* FONT -  IntegralCF*/
-
-@font-face {
-	font-family: 'integralCF';
-	src: url('../assets/fonts/Fontspring-DEMO-integralcf-heavy.otf') format('opentype');
-}

@@ -9,7 +9,7 @@ export default function Footer() {
 				<div className="max-w-md">
 					<h2 className="text-3xl font-[integralCF]">Y4D Foundation</h2>
 					<p className="pt-4 text-gray-600 leading-relaxed">
-						Discover curated fashion at Shop.EZ — designed to match your style and enhance your confidence.
+						Y4D Foundation is a youth led organization working on empowering the underprivileged section of our society. Y4D has a pan India presence through its wide network of Volunteer Chapters across the country.
 					</p>
 					<div className="flex gap-4 pt-6">
 						<Instagram
