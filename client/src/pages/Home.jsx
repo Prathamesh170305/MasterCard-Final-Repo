@@ -1,12 +1,12 @@
 import NavBar from "../components/NavBar";
-// import MainContainer from "../components/MainContainer";
+import MainContainer from "../components/MainContainer.jsx";
 import Footer from "../components/Footer";
 
 const Home = () => {
 	return (
 		<>
 			<NavBar />
-			{/* <MainContainer /> */}
+			<MainContainer />
 			<Footer />
 		</>
 	)
